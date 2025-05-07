@@ -18,5 +18,6 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   console.error('MongoDB connection error:', err);
 });
 
+app.use('/api/user', userRoutes );
 
 
