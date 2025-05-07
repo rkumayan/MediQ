@@ -19,5 +19,5 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 });
 
 app.use('/api/user', userRoutes );
-
+app.use('/api/room', require('./routes/room.routes.js'));
 
