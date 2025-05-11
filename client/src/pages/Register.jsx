@@ -1,6 +1,32 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Register = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");   
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const user = { email, password, firstName, lastName };
+        
+        return;
+        try {
+            const response = await fetch("http://localhost:5000/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(user),
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
     return (
         <div>
             
@@ -11,35 +37,51 @@ const Register = () => {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" onSubmit= {handleSubmit}>
                         <div>
-                            <label for="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
                             <div className="mt-2">
-                                <input type="email" name="email" id="email" autocomplete="email" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                <input type="email" name="email" id="email" autocomplete="email" required 
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" 
+                                    value = {email}
+                                    onChange = {(e) => setEmail(e.target.value)}
+                                />
                             </div>
                         </div>        
                         <div>
-                            <label for="text" className="block text-sm/6 font-medium text-gray-900">First Name</label>
+                            <label htmlFor="firstName" className="block text-sm/6 font-medium text-gray-900">First Name</label>
                             <div className="mt-2">
-                                <input type="text" name="firstName" id="email" autocomplete="email" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                <input type="text" name="firstName" id="firstName" required 
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" 
+                                    value = {firstName}
+                                    onChange = {(e) => setFirstName(e.target.value)}
+                                />
                             </div>
                         </div> 
                         <div>
-                            <label for="text" className="block text-sm/6 font-medium text-gray-900">Last Name</label>
+                            <label htmlFor="lastName" className="block text-sm/6 font-medium text-gray-900">Last Name</label>
                             <div className="mt-2">
-                                <input type="text" name="firstName" id="email" autocomplete="email" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                <input type="text" name="lastName" id="lastName"  required 
+                                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" 
+                                    value = {lastName}
+                                    onChange = {(e) => setLastName(e.target.value)}
+                                />
                             </div>
                         </div> 
                         <div>
 
                             <div className="flex items-center justify-between">
-                                <label for="password" className="block text-sm/6 font-medium text-gray-900">Password</label>
+                                <label htmlFor  ="password" className="block text-sm/6 font-medium text-gray-900">Password</label>
                                 <div className="text-sm">
                                     <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
                                 </div>
                             </div>
                             <div className="mt-2">
-                                <input type="password" name="password" id="password" autocomplete="current-password" required className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                <input type="password" name="password" id="password"  required
+                                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" 
+                                    value = {password}
+                                    onChange = {(e) => setPassword(e.target.value)}
+                                 />
                             </div>
                         </div>
 
@@ -49,8 +91,8 @@ const Register = () => {
                     </form>
                     
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
-                        Not a registered user
-                        <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500"> Create an account </Link>
+                        Already a registered user
+                        <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500"> Login here </Link>
                     </p>
                 </div>
             </div>

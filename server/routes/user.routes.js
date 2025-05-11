@@ -13,8 +13,8 @@ router.get('/getUser', async (req, res) => {
 });
 router.post( '/addUser', async (req, res) => {
   try {
-    const { name, email } = req.body;
-    const newUser = new User({ name, email });
+    const { firstName, lastName, email } = req.body;
+    const newUser = new User({ firstName, lastName, email });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
