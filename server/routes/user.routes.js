@@ -2,22 +2,30 @@ const User = require('../models/User.model');
 const express = require('express');
 const router = express.Router();
 
-router.get('/getUser', async (req, res) => {
+router.post('/validateUser', async (req, res) => {
   try {
-    return res.status(200).json({ message: 'Welcome to the user API!' });
-    const users = await User.find();
-    res.status(200).json(users);
+    const { email, password } = req.body;
+
+    
+    const user = await User.findOne({ email, password });
+    if (user) {
+      res.status(200).json({ ok : 'true' , message: 'User validated successfully' , user });
+    } else {
+      res.status(401).json({ ok : 'false', message: 'Invalid email or password' });
+    }
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching users' });
+    console.log('Error validating user:', error);
+    res.status(500).json({ ok : 'false' , message: 'Error fetching users' });
   }
 });
 router.post( '/addUser', async (req, res) => {
   try {
-    const { firstName, lastName, email } = req.body;
-    const newUser = new User({ firstName, lastName, email });
+    const { firstName, lastName, email , password } = req.body;
+    const newUser = new User({ firstName, lastName, email , password });
     await newUser.save();
     res.status(201).json(newUser);
   } catch (error) {
+    console.error('Error adding user:', error);
     res.status(500).json({ message: 'Error adding user' });
   }
 });
