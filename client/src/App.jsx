@@ -2,12 +2,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Auth from "./pages/Auth.jsx";
 import './App.css'
+import Navbar from "./pages/Navbar.jsx";
 
 function App() {
 
 
   return (
     <>
+      
+        <Navbar />
         <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<Auth />} />
