@@ -9,6 +9,7 @@ const MessageSchema = new mongoose.Schema({
 
 const DepartmentSchema = new mongoose.Schema({
   departmentName: { type: String, required: true },
+  tagLine: { type: String, required: true },
   doctor: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor', required: true },
   queueMembers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   groupChat: [MessageSchema],

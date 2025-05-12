@@ -25,11 +25,12 @@ router.get('/getDepartment/:departmentId', async (req, res) => {
 });
 router.post( '/createDepartment', async (req, res) => {
   try {
-    const { departmentName, doctor, queueMembers } = req.body;
-    const newDepartment = new Department({ departmentName, doctor, queueMembers });
+    const { departmentName, doctor, queueMembers , tagLine } = req.body;
+    const newDepartment = new Department({ departmentName, doctor, queueMembers , tagLine });
     await newDepartment.save();
     res.status(201).json({ ok: 'true', message: 'Department created successfully', department: newDepartment });
   } catch (error) {
+    console.log( "error creating department" , error);
     res.status(500).json({ ok: 'false',  message: 'Error creating department' });
   }
 });
@@ -48,6 +49,37 @@ router.post('/addMessage/:departmentId', async (req, res) => {
     res.status(201).json({ ok : 'true' , message: 'Message added successfully' });
   } catch (error) {
     res.status(500).json({ ok : 'false' , message: 'Error adding message' });
+  }
+});
+// Endpoint to join a department for a queue member
+router.post('/joinDepartment', async (req, res) => {
+  try {
+    const { departmentId , userId } = req.body;    
+    const department = await Department.findById(departmentId);
+    if (!department) {
+      return res.status(404).json({ ok : 'false' , message: 'Department not found' });
+    }
+    department.queueMembers.push(userId);
+    await department.save();
+    res.status(200).json({ ok : 'true' , message: 'Joined department successfully' });
+  } catch (error) {
+    res.status(500).json({ ok : 'false' , message: 'Error joining department' });
+  }
+});
+
+// Endpoint to leave a department for a queue member
+router.post('/leaveDepartment', async (req, res) => {
+  try {
+    const { departmentId , userId } = req.body;
+    const department = await Department.findById(departmentId);
+    if (!department) {
+      return res.status(404).json({ ok : 'false' , message: 'Department not found' });
+    }
+    department.queueMembers = department.queueMembers.filter(id => id.toString() !== userId);
+    await department.save();
+    res.status(200).json({ ok : 'true' , message: 'Left department successfully' });
+  } catch (error) {
+    res.status(500).json({ ok : 'false' , message: 'Error leaving department' });
   }
 });
 
