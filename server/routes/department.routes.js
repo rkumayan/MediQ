@@ -25,8 +25,8 @@ router.get('/getDepartment/:departmentId', async (req, res) => {
 });
 router.post( '/createDepartment', async (req, res) => {
   try {
-    const { departmentName, doctor, queueMembers , tagLine } = req.body;
-    const newDepartment = new Department({ departmentName, doctor, queueMembers , tagLine });
+    const { departmentName, doctor, queueMembers , tagLine , averageWaitTime} = req.body;
+    const newDepartment = new Department({ departmentName, doctor, queueMembers , tagLine , averageWaitTime });
     await newDepartment.save();
     res.status(201).json({ ok: 'true', message: 'Department created successfully', department: newDepartment });
   } catch (error) {

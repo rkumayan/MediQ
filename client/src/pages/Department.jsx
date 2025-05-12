@@ -24,8 +24,9 @@ const Department = () => {
 
     return (
         <div>
-            <h1>Department Page</h1>
-
+            
+            <p className="text-3xl text-center m-5 uppercase"> {department.departmentName} department </p>
+            <p className="text-center m-5"> {department.tagLine} </p>
             <div className="flex">
                 {/* TOTAL IN QUEUE */}
                 <div
@@ -40,17 +41,17 @@ const Department = () => {
                 >
                     Patients treated : {department.patientsTreated || 0}
                 </div>
+                {/* AVERAGE WAIT TIME */}
                 <div
                     className = "m-5 p-6 bg-yellow-600 text-white w-50"
                 >
-                    Average Wait time: 0
+                    Average Wait time: {department.averageWaitTime || 0}
                 </div>
 
             </div>
 
 
-            <p> {department.departmentName} </p>
-            <p> {department.tagLine} </p>
+            
         </div>
      );
 }
