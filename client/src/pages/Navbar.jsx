@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const Navbar = () => {
     const { user, logoutUser } = useContext(UserContext);
-    console.log("user in navbar", user);
+    
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();

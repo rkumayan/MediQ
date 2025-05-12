@@ -23,10 +23,10 @@ router.post( '/addUser', async (req, res) => {
     const { firstName, lastName, email , password } = req.body;
     const newUser = new User({ firstName, lastName, email , password });
     await newUser.save();
-    res.status(201).json(newUser);
+    res.status(201).json( { ok : 'true' , message: 'User added successfully', user: newUser });
   } catch (error) {
     console.error('Error adding user:', error);
-    res.status(500).json({ message: 'Error adding user' });
+    res.status(500).json({ ok : 'false' , message: 'Error adding user' });
   }
 });
 
