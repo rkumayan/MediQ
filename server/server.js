@@ -20,4 +20,6 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
 
 app.use('/api/user', userRoutes );
 app.use('/api/room', require('./routes/room.routes.js'));
+app.use('/api/doctor', require('./routes/doctor.routes.js'));
+app.use('/api/department', require('./routes/department.routes.js'));
 
