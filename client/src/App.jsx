@@ -5,6 +5,7 @@ import Register from "./pages/Register.jsx";
 import './App.css'
 import Navbar from "./pages/Navbar.jsx";
 import Home from "./pages/Home.jsx";
+import Department from "./pages/Department.jsx";
 import { UserContext } from "./contexts/userContext.js";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />}  />
           <Route path="/register" element={<Register />} />
+          <Route path="/department/:departmentId" element={ <Department />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<h1>About</h1>} />
           <Route path="*" element={<h1>404 Not Found</h1>} />

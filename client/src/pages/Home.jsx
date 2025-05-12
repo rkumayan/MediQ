@@ -22,6 +22,25 @@ const Home = () => {
         fetchDepartments();
     }, []);
 
+    const joinNow = async (departmentId) => {
+        try {
+            const response = await fetch("http://localhost:4000/api/department/joinDepartment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${user.token}`
+                },
+                body: JSON.stringify({ departmentId, userId: user._id })
+            });
+            const data = await response.json();
+            if( !data.ok)
+                alert("Error : " , data.message);
+            else
+                alert("You have successfully joined the department");
+        } catch (error) {
+            console.error("Error joining department:", error);
+        }
+    }
     return (
         <div>
             
