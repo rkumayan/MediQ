@@ -2,6 +2,18 @@ const Department = require('../models/Department.model.js');
 const express = require('express');
 const router = express.Router();
 
+// Endpoint to get all departments
+router.get('/getDepartments', async (req, res) => {
+  try {
+    const departments = await Department.find();
+    res.status(200).json({ ok: 'true' , departments });
+  } catch (error) {
+    res.status(500).json({ ok: 'false', message: 'Error fetching departments' });
+  }
+});
+
+
+// Endpoint to get a specific department by ID
 router.get('/getDepartment/:departmentId', async (req, res) => {
   try {
     const departmentId = req.params.departmentId;
