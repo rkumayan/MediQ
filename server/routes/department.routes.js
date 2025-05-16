@@ -106,6 +106,22 @@ router.post('/removeQueueMember', async (req, res) => {
   }
 });
 
+// Endpoint to increase the number of patients treated
+router.post('/increasePatientsTreated/:departmentId', async (req, res) => {
+  try {
+    const departmentId = req.params.departmentId;
+    const department = await Department.findById(departmentId);
+    if (!department) {
+      return res.status(404).json({ ok : 'false' , message: 'Department not found' });
+    }
+    department.patientsTreated += 1;
+    await department.save();
+    res.status(200).json({ ok : 'true' , message: 'Patients treated count increased' });
+  } catch (error) {
+    res.status(500).json({ ok : 'false' , message: 'Error increasing patients treated count' });
+  }
+});
+
 // Endpoint to push messages to department
 router.post('/addMessage/:departmentId', async (req, res) => {
   try {

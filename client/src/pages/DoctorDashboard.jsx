@@ -90,7 +90,7 @@ const Department = () => {
         }
     }, [departmentId]);
 
-    const removeFromQueue = async (userId , message) => {
+    const removeFromQueue = async ( isAppointmentSet , userId , message) => {
         const response = await fetch(`http://localhost:4000/api/department/removeQueueMember`, {
             method: "POST",
             headers: {
@@ -102,6 +102,20 @@ const Department = () => {
         if (data.ok === "true") {
             alert("User removed from queue");
             addChatToDatabase("system" , message , "system");
+            if(isAppointmentSet){
+                try{
+                    const response = await fetch(`http://localhost:4000/api/department/increasePatientsTreated/${departmentId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({  departmentId })
+                    });
+                                        
+                } catch (error) {
+                    console.error("Error setting appointment:", error);
+                }
+            }
             fetchDepartment();
         } else {
             alert("Error removing user from queue");
@@ -132,10 +146,10 @@ const Department = () => {
                                 <p className="text-sm text-gray-500 text-center"> for {member.visitReason} </p>
                                 <div className="flex justify-center">
                                     <button className="border p-2 m-1 cursor-pointer rounded hover:bg-green-600 hover:text-white"
-                                        onClick={ () => { removeFromQueue(member.userId , `appointment setted for ${member.fullName}`) } }
+                                        onClick={ () => { removeFromQueue( true , member.userId , `appointment setted for ${member.fullName}`) } }
                                     > Set Appointment</button>
                                     <button className="border p-2 m-1 cursor-pointer rounded hover:bg-red-600 hover:text-white"
-                                        onClick={ () => { removeFromQueue(member.userId , `${member.fullName} removed from queue`) } }
+                                        onClick={ () => { removeFromQueue( false , member.userId , `${member.fullName} removed from queue`) } }
                                     > Remove from queue</button>
                                 </div>
                             </li>
