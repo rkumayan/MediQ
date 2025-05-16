@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import NotLoggedIn from "./NotLoggedIn";
 const Home = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const [departments, setDepartments] = useState([]);
@@ -49,13 +49,13 @@ const Home = () => {
     }
     return (
         <div>
-            
-            {user && <p>Hello, {user.firstName}!</p>}
-            {!user && <p>Please log in to see your personalized message.</p>}
+
+
+            {!user && <NotLoggedIn />}
 
             <div className="flex">
             
-            { departments.length > 0 &&
+            { user && departments.length > 0 &&
                 departments.map((department) => (                    
                     <div key = {department._id} className="m-10 p-6 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">                        
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

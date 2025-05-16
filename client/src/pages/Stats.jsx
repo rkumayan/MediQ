@@ -31,8 +31,8 @@ const Stats = ({ department }) => {
                         <i className="fas fa-user-check"></i>
                     </div>
                     <div className="stat-info">
-                        <h3>Served Today</h3>
-                        <p id="servedCount">0</p>
+                        <h3>Total Served : </h3>
+                        <p id="servedCount">{department.patientsTreated || 0}</p>
                         
                     </div>
                 </div>
