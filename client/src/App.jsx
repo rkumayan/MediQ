@@ -9,6 +9,7 @@ import Department from "./pages/Department.jsx";
 import DocLogin from "./pages/DocLogin.jsx";
 import { UserContext } from "./contexts/userContext.js";
 import { DoctorContext } from "./contexts/doctorContext.js";
+import DoctorDashboard from "./pages/DoctorDashboard.jsx";
 
 function App() {
   const [user , setUser] = useState( JSON.parse(localStorage.getItem("user")) );
@@ -32,8 +33,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />}  />
             <Route path="/docLogin" element={<DocLogin />}  />
+            <Route path="/doctorDashboard" element={<DoctorDashboard />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/department/:departmentId" element={ <Department />} />
+            <Route path="/department/:departmentId" element={<Department />} />
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<h1>About</h1>} />
             <Route path="*" element={<h1>404 Not Found</h1>} />

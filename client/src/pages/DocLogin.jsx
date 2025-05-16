@@ -1,28 +1,29 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState , useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
+import { DoctorContext } from "../contexts/doctorContext";
 const DocLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");   
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext);
+    const { setDoctor } = useContext(DoctorContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = { email, password };                
+        const doctor = { email, password };                
         try {
-            const response = await fetch("http://localhost:4000/api/user/validateUser", {
+            const response = await fetch("http://localhost:4000/api/doctor/validateDoctor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(user),
+                body: JSON.stringify(doctor),
             });
             const data = await response.json();
             if( data.ok === 'true' ){
-                localStorage.setItem("user", JSON.stringify(data.user));
-                setUser(data.user);
-                navigate("/");
+                localStorage.setItem("doctor", JSON.stringify(data.doctor));
+                setDoctor(data.doctor);
+                navigate("/doctorDashboard");
             } else {
                 alert(data.message);
             }
@@ -77,7 +78,7 @@ const DocLogin = () => {
                     </form>
                     
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
-                        Not a registered user
+                        Not a registered Doctor
                         <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500"> Create an account </Link>
                     </p>
                 </div>
