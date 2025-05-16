@@ -11,6 +11,37 @@ const Department = () => {
     const [department, setDepartment] = useState({});
     const { user } = useContext(UserContext);
 
+    const [message, setMessage] = useState("");
+
+    const sendChat = async (e) => {
+        e.preventDefault();
+        const chatData = {
+            sender: user.firstName,
+            text: message,
+        };
+
+        if (!message) return;
+        try {
+            
+            const response = await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(chatData)
+            });
+            const data = await response.json();
+            if (data.ok === "false") {
+                alert("Error: " + data.message);
+            } else {
+                alert("Message sent successfully!");
+                setMessage("");
+                fetchDepartment(); // Refresh department data
+            }
+        } catch (error) {
+            console.error("Error sending message:", error);
+        }
+    }
     const fetchDepartment = async () => {
         try {
             const response = await fetch(`http://localhost:4000/api/department/getDepartment/${departmentId}`);
@@ -166,6 +197,37 @@ const Department = () => {
                             </li>
                         ))}
                     </ul>
+                </div>
+
+                {/* GROUP CHAT */}
+                <div>
+                    { department.groupChat?.length > 0 && (
+                        <div className="w-80 border text-slate-600 m-6">                            
+                            <ul>
+                                {department.groupChat.map((message, index) => (
+                                    <li key={index} className="border-b p-2">
+                                        <strong>{message.sender}</strong>: {message.text}
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="flex items-center space-x-2 max-w-md mx-auto mt-4">
+                              <input
+                                type="text"
+                                placeholder="Type your message..."
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                              />
+                              <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
+                                onClick={sendChat}
+                              >
+                                <i className="fas fa-paper-plane"></i>
+                              </button>
+                            </div>
+
+                        </div>
+                        
+                    )}
                 </div>
 
             </div>

@@ -37,24 +37,6 @@ router.post( '/createDepartment', async (req, res) => {
   }
 });
 
-// Endpoint to push messages to department
-router.post('/addMessage/:departmentId', async (req, res) => {
-  try {
-    const departmentId = req.params.departmentId;
-    const { sender , text } = req.body;
-    const department = await Department.findById(departmentId);
-    if (!department) {
-      return res.status(404).json({ ok : 'false' , message: 'Department not found' });
-    }
-    department.groupChat.push({ sender, text});
-    await department.save();
-    res.status(201).json({ ok : 'true' , message: 'Message added successfully' });
-  } catch (error) {
-    res.status(500).json({ ok : 'false' , message: 'Error adding message' });
-  }
-});
-
-
 // Endpoint to join a department for a queue member
 router.post('/joinDepartment', async (req, res) => {
   try {
@@ -100,6 +82,23 @@ router.post('/leaveDepartment', async (req, res) => {
     res.status(200).json({ ok : 'true' , message: 'Left department successfully' });
   } catch (error) {
     res.status(500).json({ ok : 'false' , message: 'Error leaving department' });
+  }
+});
+
+// Endpoint to push messages to department
+router.post('/addMessage/:departmentId', async (req, res) => {
+  try {
+    const departmentId = req.params.departmentId;
+    const { sender , text } = req.body;
+    const department = await Department.findById(departmentId);
+    if (!department) {
+      return res.status(404).json({ ok : 'false' , message: 'Department not found' });
+    }
+    department.groupChat.push({ sender, text});
+    await department.save();
+    res.status(201).json({ ok : 'true' , message: 'Message added successfully' });
+  } catch (error) {
+    res.status(500).json({ ok : 'false' , message: 'Error adding message' });
   }
 });
 
