@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import {useState, useEffect} from "react";
 import {UserContext} from "../contexts/UserContext";
 import { useContext } from "react";
+import Stats from "../pages/Stats";
 
 const Department = () => {
     const { departmentId } = useParams();
@@ -13,13 +14,16 @@ const Department = () => {
 
     const [message, setMessage] = useState("");
 
+    // setInterval(() => {
+    //     fetchDepartment();
+    // }, 15000);
+
     const sendChat = async (e) => {
         e.preventDefault();
         const chatData = {
             sender: user.firstName,
             text: message,
         };
-
         if (!message) return;
         try {
             
@@ -33,9 +37,9 @@ const Department = () => {
             const data = await response.json();
             if (data.ok === "false") {
                 alert("Error: " + data.message);
-            } else {
-                alert("Message sent successfully!");
+            } else {                
                 setMessage("");
+                
                 fetchDepartment(); // Refresh department data
             }
         } catch (error) {
@@ -101,31 +105,11 @@ const Department = () => {
             
             <p className="text-3xl text-center m-5 uppercase"> {department.departmentName} department </p>
             <p className="text-center m-5"> {department.tagLine} </p>
-            <div className="flex">
-                {/* TOTAL IN QUEUE */}
-                <div
-                    className = "m-5 p-6 bg-blue-800 text-white w-50"
-                > 
-                    Total in queue : {department.queueMembers?.length || 0}
-                </div>
+            <Stats department = {department} />
 
-                {/* PATIENTS TREATED */}
-                <div
-                    className = "m-5 p-6 bg-green-800 text-white w-50"
-                >
-                    Patients treated : {department.patientsTreated || 0}
-                </div>
-                {/* AVERAGE WAIT TIME */}
-                <div
-                    className = "m-5 p-6 bg-yellow-600 text-white w-50"
-                >
-                    Average Wait time: {department.averageWaitTime || 0}
-                </div>
+            <div className="flex flex-wrap h-100  ">
 
-            </div>
-
-            <div className="flex">
-                <div className="w-80 border text-slate-600 m-6">
+                <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
                     {/* FORM TO TO ADD USER TO THE QUEUE */}
                 <form >
                     <h2 className=" m-4">
@@ -185,25 +169,29 @@ const Department = () => {
                 </div>  
 
                 {/* QUEUE MEMBERS */}
-                <div className="w-80 border text-slate-600 m-6">
-                    <h2 className="m-4">
+                <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
+                    <h2 className="m-4 border-b">
                         <i className="fas fa-users m-2"></i>
-                        <p className="text-xl inline-block bold"> Queue Members</p>
+                        <p className="text-xl inline-block bold "> Queue Members</p>
                     </h2>
                     <ul>
                         {department.queueMembers?.map(member => (
-                            <li key={member.userId} className="border-b p-2">
-                                {member.fullName} - {member.visitReason} (Priority: {member.priority})
+                            <li key={member.userId} className= {"border-b p-2" + ( member.priority === "emergency" ? " text-red-500" : "")}>
+                                <p className="text-center"> {member.fullName} </p>
+                                <p className="text-sm text-gray-500 text-center"> for {member.visitReason} </p>
+                                
                             </li>
                         ))}
                     </ul>
                 </div>
 
                 {/* GROUP CHAT */}
-                <div>
+                <div >
+                    
                     { department.groupChat?.length > 0 && (
-                        <div className="w-80 border text-slate-600 m-6">                            
-                            <ul>
+                        <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" > 
+                            <p className="text-center text-xl m-2"> <i class="fa-solid fa-user-group"></i>Group Chat</p>
+                            <ul style={{ height: "250px", overflowY: "scroll" }}>
                                 {department.groupChat.map((message, index) => (
                                     <li key={index} className="border-b p-2">
                                         <strong>{message.sender}</strong>: {message.text}
