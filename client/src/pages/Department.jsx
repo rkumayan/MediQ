@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import {useState, useEffect} from "react";
-
+import {UserContext} from "../contexts/UserContext";
+import { useContext } from "react";
 
 const Department = () => {
     const { departmentId } = useParams();
@@ -8,6 +9,7 @@ const Department = () => {
     const [visitReason , setVisitReason] = useState("General Checkup");
     const [priority , setPriority] = useState("normal");
     const [department, setDepartment] = useState({});
+    const { user } = useContext(UserContext);
 
     const fetchDepartment = async () => {
         try {
@@ -22,19 +24,20 @@ const Department = () => {
         }
     }
 
-    const handleSubmit = async (e) => {
+    const addQueueMember = async (e) => {
         e.preventDefault();
 
         const patientData = {
             fullName,
             visitReason,
             priority,
-            
+            userId: user._id,
+            departmentId: departmentId,
         };
-        console.log("Patient Data: ", patientData);
-        return;
+        
+        
         try {
-            const response = await fetch("http://localhost:4000/api/patient/register", {
+            const response = await fetch(`http://localhost:4000/api/department/joinDepartment/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -42,10 +45,12 @@ const Department = () => {
                 body: JSON.stringify(patientData)
             });
             const data = await response.json();
-            if (!data.ok) {
+            console.log( data);
+            if (data.ok === "false") {  
                 alert("Error: " + data.message);
             } else {
-                alert("Patient registered successfully!");
+                alert("Patient joined successfully!");
+                fetchDepartment(); // Refresh department data
                 // Reset form fields
                 setFullName("");
                 setVisitReason("General Checkup");
@@ -88,9 +93,9 @@ const Department = () => {
 
             </div>
 
-
-            {/* FORM TO TO ADD USER TO THE QUEUE */}
-            <div className="w-80 border text-slate-600 m-6">
+            <div className="flex">
+                <div className="w-80 border text-slate-600 m-6">
+                    {/* FORM TO TO ADD USER TO THE QUEUE */}
                 <form >
                     <h2 className=" m-4">
                         <i className="fas fa-user-plus m-2 "></i>
@@ -141,14 +146,32 @@ const Department = () => {
                     </div>
                     
                     <button  className="p-3 bg-blue-500 text-white rounded mx-5 my-2 w-60 cursor-pointer"
-                        type="submit" onClick={handleSubmit}>
+                        type="submit" onClick={addQueueMember}>
                         <i className="fas fa-plus-circle"></i> Add to Queue
                     </button>                        
                     
                 </form>
-            </div>            
+                </div>  
+
+                {/* QUEUE MEMBERS */}
+                <div className="w-80 border text-slate-600 m-6">
+                    <h2 className="m-4">
+                        <i className="fas fa-users m-2"></i>
+                        <p className="text-xl inline-block bold"> Queue Members</p>
+                    </h2>
+                    <ul>
+                        {department.queueMembers?.map(member => (
+                            <li key={member.userId} className="border-b p-2">
+                                {member.fullName} - {member.visitReason} (Priority: {member.priority})
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+            </div>
+
         </div>
      );
 }
- 
+
 export default Department;

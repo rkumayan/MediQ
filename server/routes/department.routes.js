@@ -23,6 +23,8 @@ router.get('/getDepartment/:departmentId', async (req, res) => {
     res.status(500).json({ ok: 'false', message: 'Error fetching department details' });
   }
 });
+
+// Endpoint to create a new department
 router.post( '/createDepartment', async (req, res) => {
   try {
     const { departmentName, doctor, queueMembers , tagLine , averageWaitTime} = req.body;
@@ -35,7 +37,7 @@ router.post( '/createDepartment', async (req, res) => {
   }
 });
 
-// add endpoint to push messages to department
+// Endpoint to push messages to department
 router.post('/addMessage/:departmentId', async (req, res) => {
   try {
     const departmentId = req.params.departmentId;
@@ -51,15 +53,22 @@ router.post('/addMessage/:departmentId', async (req, res) => {
     res.status(500).json({ ok : 'false' , message: 'Error adding message' });
   }
 });
+
+
 // Endpoint to join a department for a queue member
 router.post('/joinDepartment', async (req, res) => {
   try {
-    const { departmentId , userId } = req.body;    
+    const { departmentId , userId , fullName , visitReason , priority } = req.body;
     const department = await Department.findById(departmentId);
     if (!department) {
       return res.status(404).json({ ok : 'false' , message: 'Department not found' });
     }
-    department.queueMembers.push(userId);
+    // Check if the user is already a queue member
+    const isMember = department.queueMembers.some(member => member.userId.toString() === userId);
+    if (isMember) {
+      return res.status(400).json({ ok : 'false' , message: 'User is already a member of the queue' });
+    }
+    department.queueMembers.push({ userId , fullName , visitReason , priority });
     await department.save();
     res.status(200).json({ ok : 'true' , message: 'Joined department successfully' });
   } catch (error) {
@@ -69,14 +78,25 @@ router.post('/joinDepartment', async (req, res) => {
 
 // Endpoint to leave a department for a queue member
 router.post('/leaveDepartment', async (req, res) => {
+  
   try {
     const { departmentId , userId } = req.body;
     const department = await Department.findById(departmentId);
     if (!department) {
       return res.status(404).json({ ok : 'false' , message: 'Department not found' });
     }
-    department.queueMembers = department.queueMembers.filter(id => id.toString() !== userId);
+    let found = false;
+    department.queueMembers = department.queueMembers.filter(member => {
+      if( member.userId.toString() == userId.toString())
+          found = true;
+      // Check if the userId is not equal to the id in the queueMembers array
+      return member.userId.toString() != userId.toString();      
+    });
+    if (!found) {
+      return res.status(400).json({ ok : 'false' , message: 'User is not a member of the queue' });
+    }
     await department.save();
+    
     res.status(200).json({ ok : 'true' , message: 'Left department successfully' });
   } catch (error) {
     res.status(500).json({ ok : 'false' , message: 'Error leaving department' });
