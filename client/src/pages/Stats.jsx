@@ -1,55 +1,61 @@
+import { useEffect , useState} from 'react';
 import './stats.css';
 
 const Stats = ({ department }) => {
     console.log("Department:", department);
+    const [emergencyCount, setEmergencyCount] = useState(0);
+
+    useEffect(() => {
+        let cnt = 0;
+        for (let i = 0; i < department?.queueMembers?.length || 0; i++) {
+            if (department.queueMembers[i].priority === 'emergency') {
+                cnt++;
+            }
+        }
+        setEmergencyCount(cnt);
+    }, [department]);
     return (
-        <div class="stats-grid">
-                <div class="stat-card bg-blue">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
+        <div className="stats-grid">
+                <div className="stat-card bg-blue">
+                    <div className="stat-icon">
+                        <i className="fas fa-users"></i>
                     </div>
-                    <div class="stat-info">
+                    <div className="stat-info">
                         <h3>Total in Queue</h3>
-                        <p id="totalQueueCount">0</p>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 12%
+                        <p id="totalQueueCount"> {department.queueMembers?.length || 0}</p>
+                        <div className="stat-trend up">
+                            <i className="fas fa-arrow-up"></i> 12%
                         </div>
                     </div>
                 </div>
-                <div class="stat-card bg-green">
-                    <div class="stat-icon">
-                        <i class="fas fa-user-check"></i>
+                <div className="stat-card bg-green">
+                    <div className="stat-icon">
+                        <i className="fas fa-user-check"></i>
                     </div>
-                    <div class="stat-info">
+                    <div className="stat-info">
                         <h3>Served Today</h3>
                         <p id="servedCount">0</p>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 5%
-                        </div>
+                        
                     </div>
                 </div>
-                <div class="stat-card bg-orange">
-                    <div class="stat-icon">
-                        <i class="fas fa-clock"></i>
+                <div className="stat-card bg-orange">
+                    <div className="stat-icon">
+                        <i className="fas fa-clock"></i>
                     </div>
-                    <div class="stat-info">
+                    <div className="stat-info">
                         <h3>Avg. Wait Time</h3>
-                        <p id="avgWaitTime">0 min</p>
-                        <div class="stat-trend down">
-                            <i class="fas fa-arrow-down"></i> 8%
-                        </div>
+                        <p id="avgWaitTime"> { department.averageWaitTime || 0} min</p>
+                        
                     </div>
                 </div>
-                <div class="stat-card bg-red">
-                    <div class="stat-icon">
-                        <i class="fas fa-ambulance"></i>
+                <div className="stat-card bg-red">
+                    <div className="stat-icon">
+                        <i className="fas fa-ambulance"></i>
                     </div>
-                    <div class="stat-info">
+                    <div className="stat-info">
                         <h3>Emergencies</h3>
-                        <p id="emergencyCount">0</p>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 15%
-                        </div>
+                        <p id="emergencyCount">{emergencyCount}</p>
+
                     </div>
                 </div>
             </div>
