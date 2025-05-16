@@ -145,64 +145,7 @@ const Department = () => {
 
             <div className="flex flex-wrap h-100  ">
 
-                <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
-                    {/* FORM TO TO ADD USER TO THE QUEUE */}
-                <form >
-                    <h2 className=" m-4">
-                        <i className="fas fa-user-plus m-2 "></i>
-                         <p className = "text-xl inline-block bold"> Patient Registration</p>
-                    </h2>
-
-                    <div className="mx-5 my-2">
-                        <label><i className="fas fa-user "></i> Full Name</label>
-                        <input type="text" id="patientName" placeholder="Enter patient's full name" 
-                            className="block border border-slate-500 mx-5 my-1 w-60"
-                                value={fullName}
-                                onChange={(e) => setFullName(e.target.value)}
-                            />
-                    </div>
-                    <div className="mx-5 my-2">
-                        <label ><i className="fas fa-notes-medical"></i> Reason for Visit</label>
-                        <select id="visitReason" className="block border border-slate-500 mx-5 my-1 w-60"
-                            value={visitReason}
-                            onChange={(e) => setVisitReason(e.target.value)}
-                        >
-                            <option value="General Checkup">General Checkup</option>
-                            <option value="Injury">Injury</option>
-                            <option value="Follow-up">Follow-up</option>
-                            <option value="Emergency">Emergency</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div className="mx-5 my-2">
-                        <label><i className="fas fa-exclamation-triangle"></i> Priority Level</label>
-                        <div className="">
-                            <p className= {"priority-option normal px-3 py-1 m-2 rounded cursor-pointer inline-block border"
-                                + (priority === "normal" ? " text-white bg-green-500" : " text-slate-600 bg-white")}
-                                onClick={() => {
-                                    setPriority("normal");
-                                }}
-                            >
-                                <span><i className="fas fa-walking"></i> Normal</span>
-                            </p>
-                            <p className= {"priority-option emergency px-3 py-1 m-2 rounded cursor-pointer inline-block border"
-                                + (priority === "emergency" ? " text-white bg-red-500" : " text-slate-600 bg-white")}
-                                onClick={() => {
-                                    setPriority("emergency");
-                                }}
-                            >
-                                <span><i className="fas fa-ambulance"></i> Emergency</span>
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <button  className="p-3 bg-blue-500 text-white rounded mx-5 my-2 w-60 cursor-pointer"
-                        type="submit" onClick={addQueueMember}>
-                        <i className="fas fa-plus-circle"></i> Add to Queue
-                    </button>                        
-                    
-                </form>
-                </div>  
+                
 
                 {/* QUEUE MEMBERS */}
                 <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
