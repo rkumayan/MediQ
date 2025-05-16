@@ -23,6 +23,7 @@ const Department = () => {
         const chatData = {
             sender: user.firstName,
             text: message,
+            senderType: "user",
         };
         if (!message) return;
         try {
@@ -84,7 +85,19 @@ const Department = () => {
             if (data.ok === "false") {  
                 alert("Error: " + data.message);
             } else {
-                alert("Patient joined successfully!");
+                
+                await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify( {
+                        sender: "system",
+                        text: `${fullName} has joined the queue for ${visitReason}`,
+                        senderType: "system",
+                    })
+                });
+
                 fetchDepartment(); // Refresh department data
                 // Reset form fields
                 setFullName("");
@@ -188,34 +201,40 @@ const Department = () => {
                 {/* GROUP CHAT */}
                 <div >
                     
-                    { department.groupChat?.length > 0 && (
-                        <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" > 
-                            <p className="text-center text-xl m-2"> <i class="fa-solid fa-user-group"></i>Group Chat</p>
+                
+                    <div className="w-80 bg-white border relative text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" 
+                        style={{ height: "350px"}}
+                    > 
+                        <p className="text-center text-xl m-2"> <i class="fa-solid fa-user-group"></i>Group Chat</p>
+
+                         {department.groupChat?.length > 0 && 
                             <ul style={{ height: "250px", overflowY: "scroll" }}>
                                 {department.groupChat.map((message, index) => (
-                                    <li key={index} className="border-b p-2">
+                                    <li key={index} className={" p-2" + (message.senderType === "system" ? " text-red-500" : "")}>
+                                        
                                         <strong>{message.sender}</strong>: {message.text}
                                     </li>
                                 ))}
                             </ul>
-                            <div className="flex items-center space-x-2 max-w-md mx-auto mt-4">
-                              <input
-                                type="text"
-                                placeholder="Type your message..."
-                                className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                              />
-                              <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
-                                onClick={sendChat}
-                              >
-                                <i className="fas fa-paper-plane"></i>
-                              </button>
-                            </div>
-
-                        </div>
+                            }
                         
-                    )}
+                        <div className="flex items-center space-x-2 max-w-md mx-auto mt-4  absolute bottom-0 left-5">
+                          <input
+                            type="text"
+                            placeholder="Type your message..."
+                            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                          />
+                          <button className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600"
+                            onClick={sendChat}
+                          >
+                            <i className="fas fa-paper-plane"></i>
+                          </button>
+                        </div>
+                    </div>
+                        
+                    
                 </div>
 
             </div>

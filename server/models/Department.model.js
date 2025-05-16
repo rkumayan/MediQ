@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 // Optional: import the Message model if it's a separate schema
 const MessageSchema = new mongoose.Schema({
   sender: { type: String, required: true },
+  senderType: { type: String, enum: ['user', 'system'], required: true },
   text: { type: String, trim: true, required: true },
   timestamp: { type: Date, default: Date.now }
 });

@@ -89,15 +89,16 @@ router.post('/leaveDepartment', async (req, res) => {
 router.post('/addMessage/:departmentId', async (req, res) => {
   try {
     const departmentId = req.params.departmentId;
-    const { sender , text } = req.body;
+    const { sender , text , senderType } = req.body;
     const department = await Department.findById(departmentId);
     if (!department) {
       return res.status(404).json({ ok : 'false' , message: 'Department not found' });
     }
-    department.groupChat.push({ sender, text});
+    department.groupChat.push({ sender, text , senderType });
     await department.save();
     res.status(201).json({ ok : 'true' , message: 'Message added successfully' });
   } catch (error) {
+    console.log( "error adding message" , error);
     res.status(500).json({ ok : 'false' , message: 'Error adding message' });
   }
 });

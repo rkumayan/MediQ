@@ -23,9 +23,7 @@ const Stats = ({ department }) => {
                     <div className="stat-info">
                         <h3>Total in Queue</h3>
                         <p id="totalQueueCount"> {department.queueMembers?.length || 0}</p>
-                        <div className="stat-trend up">
-                            <i className="fas fa-arrow-up"></i> 12%
-                        </div>
+                        
                     </div>
                 </div>
                 <div className="stat-card bg-green">
