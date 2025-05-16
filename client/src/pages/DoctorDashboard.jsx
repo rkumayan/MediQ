@@ -5,9 +5,7 @@ import Stats from "../pages/Stats";
 
 const Department = () => {
     const [departmentId,setDepartmentId] = useState(null);
-    const [fullName , setFullName] = useState("");  
-    const [visitReason , setVisitReason] = useState("General Checkup");
-    const [priority , setPriority] = useState("normal");
+    
     const [department, setDepartment] = useState({});
     const { doctor } = useContext(DoctorContext);
 
@@ -17,22 +15,15 @@ const Department = () => {
     //     fetchDepartment();
     // }, 15000);
 
-    const sendChat = async (e) => {
-        e.preventDefault();
-        const chatData = {
-            sender: user.firstName,
-            text: message,
-            senderType: "user",
-        };
-        if (!message) return;
-        try {
-            
+    const addChatToDatabase = async (sender , text , senderType) => {
+        if(!text) return;
+        try {            
             const response = await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(chatData)
+                body: JSON.stringify({ sender , text , senderType })
             });
             const data = await response.json();
             if (data.ok === "false") {
@@ -45,6 +36,17 @@ const Department = () => {
         } catch (error) {
             console.error("Error sending message:", error);
         }
+    }
+
+    const sendChat = async (e) => {
+        e.preventDefault();
+        const chatData = {
+            sender: "system",
+            text: message,
+            senderType: "system",
+        };
+        addChatToDatabase(sender , message , "system");
+        setMessage("");
     }
     const fetchDepartment = async () => {
         try {
@@ -70,59 +72,11 @@ const Department = () => {
         const data = await response.json();
         if (data.ok === "true") {
             setDepartmentId(data.departmentId);
-            console.log("Department ID:", data.departmentId);
+            
         } else {
             alert("Error fetching department ID");
         }
-    }; 
-    const addQueueMember = async (e) => {
-        e.preventDefault();
-
-        const patientData = {
-            fullName,
-            visitReason,
-            priority,
-            userId: user._id,
-            departmentId: departmentId,
-        };
-        
-        
-        try {
-            const response = await fetch(`http://localhost:4000/api/department/joinDepartment/`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(patientData)
-            });
-            const data = await response.json();
-            console.log( data);
-            if (data.ok === "false") {  
-                alert("Error: " + data.message);
-            } else {
-                
-                await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify( {
-                        sender: "system",
-                        text: `${fullName} has joined the queue for ${visitReason}`,
-                        senderType: "system",
-                    })
-                });
-
-                fetchDepartment(); // Refresh department data
-                // Reset form fields
-                setFullName("");
-                setVisitReason("General Checkup");
-                setPriority("normal");
-            }
-        } catch (error) {
-            console.error("Error registering patient:", error);
-        }
-    }
+    };
 
     useEffect(() => {
         // get the department of doctor
@@ -136,6 +90,24 @@ const Department = () => {
         }
     }, [departmentId]);
 
+    const removeFromQueue = async (userId , message) => {
+        const response = await fetch(`http://localhost:4000/api/department/removeQueueMember`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ userId , departmentId })
+        });
+        const data = await response.json();
+        if (data.ok === "true") {
+            alert("User removed from queue");
+            addChatToDatabase("system" , message , "system");
+            fetchDepartment();
+        } else {
+            alert("Error removing user from queue");
+        }
+    }
+
     return (
         <div>
             
@@ -148,17 +120,24 @@ const Department = () => {
                 
 
                 {/* QUEUE MEMBERS */}
-                <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
+                <div className="w-100 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
                     <h2 className="m-4 border-b">
                         <i className="fas fa-users m-2"></i>
                         <p className="text-xl inline-block bold "> Queue Members</p>
                     </h2>
                     <ul>
                         {department.queueMembers?.map(member => (
-                            <li key={member.userId} className= {"border-b p-2" + ( member.priority === "emergency" ? " text-red-500" : "")}>
-                                <p className="text-center"> {member.fullName} </p>
+                            <li key={member.userId} className= {"border-b p-2 cursor-pointer " + ( member.priority === "emergency" ? " text-red-500" : "")}>
+                                <p className="text-center font-bold"> {member.fullName} </p>
                                 <p className="text-sm text-gray-500 text-center"> for {member.visitReason} </p>
-                                
+                                <div className="flex justify-center">
+                                    <button className="border p-2 m-1 cursor-pointer rounded hover:bg-green-600 hover:text-white"
+                                        onClick={ () => { removeFromQueue(member.userId , `appointment setted for ${member.fullName}`) } }
+                                    > Set Appointment</button>
+                                    <button className="border p-2 m-1 cursor-pointer rounded hover:bg-red-600 hover:text-white"
+                                        onClick={ () => { removeFromQueue(member.userId , `${member.fullName} removed from queue`) } }
+                                    > Remove from queue</button>
+                                </div>
                             </li>
                         ))}
                     </ul>
@@ -171,13 +150,12 @@ const Department = () => {
                     <div className="w-80 bg-white border relative text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" 
                         style={{ height: "350px"}}
                     > 
-                        <p className="text-center text-xl m-2"> <i class="fa-solid fa-user-group"></i>Group Chat</p>
+                        <p className="text-center text-xl m-2"> <i className="fa-solid fa-user-group"></i>Group Chat</p>
 
                          {department.groupChat?.length > 0 && 
                             <ul style={{ height: "250px", overflowY: "scroll" }}>
                                 {department.groupChat.map((message, index) => (
-                                    <li key={index} className={" p-2" + (message.senderType === "system" ? " text-red-500" : "")}>
-                                        
+                                    <li key={index} className={" p-2" + (message.senderType === "system" ? " text-red-500" : "")}>                                        
                                         <strong>{message.sender}</strong>: {message.text}
                                     </li>
                                 ))}

@@ -85,6 +85,27 @@ router.post('/leaveDepartment', async (req, res) => {
   }
 });
 
+// Endpoint to remove a queue member from a department
+router.post('/removeQueueMember', async (req, res) => {
+  try {
+    const { departmentId , userId } = req.body;
+    const department = await Department.findById(departmentId);
+    if (!department) {
+      return res.status(404).json({ ok : 'false' , message: 'Department not found' });
+    }
+    // Check if the user is a member of the queue
+    const isMember = department.queueMembers.some(member => member.userId.toString() === userId);
+    if (!isMember) {
+      return res.status(400).json({ ok : 'false' , message: 'User is not a member of the queue' });
+    }
+    department.queueMembers = department.queueMembers.filter(member => member.userId.toString() !== userId);
+    await department.save();
+    res.status(200).json({ ok : 'true' , message: 'Removed from department successfully'  });
+  } catch (error) {
+    res.status(500).json({ ok : 'false' , message: 'Error removing from department' });
+  }
+});
+
 // Endpoint to push messages to department
 router.post('/addMessage/:departmentId', async (req, res) => {
   try {

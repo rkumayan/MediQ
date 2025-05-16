@@ -2,10 +2,10 @@ import { useEffect , useState} from 'react';
 import './stats.css';
 
 const Stats = ({ department }) => {
-    console.log("Department:", department);
-    const [emergencyCount, setEmergencyCount] = useState(0);
 
-    useEffect(() => {
+    const [emergencyCount, setEmergencyCount] = useState(0);
+    const fetchEmergencyCount = () => {
+        console.log( "department in emergeycy " , department);
         let cnt = 0;
         for (let i = 0; i < department?.queueMembers?.length || 0; i++) {
             if (department.queueMembers[i].priority === 'emergency') {
@@ -13,7 +13,14 @@ const Stats = ({ department }) => {
             }
         }
         setEmergencyCount(cnt);
+    }
+    useEffect(() => {
+        fetchEmergencyCount();
     }, [department]);
+
+    useEffect(() => {
+        fetchEmergencyCount();
+    }, []);
     return (
         <div className="stats-grid">
                 <div className="stat-card bg-blue">
