@@ -10,6 +10,7 @@ import DocLogin from "./pages/DocLogin.jsx";
 import { UserContext } from "./contexts/userContext.js";
 import { DoctorContext } from "./contexts/doctorContext.js";
 import DoctorDashboard from "./pages/DoctorDashboard.jsx";
+import DocRegister from "./pages/DocRegister.jsx";
 
 function App() {
   const [user , setUser] = useState( JSON.parse(localStorage.getItem("user")) );
@@ -33,6 +34,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />}  />
             <Route path="/docLogin" element={<DocLogin />}  />
+            <Route path="/docRegister" element = {<DocRegister />} />
             <Route path="/doctorDashboard" element={<DoctorDashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/department/:departmentId" element={<Department />} />

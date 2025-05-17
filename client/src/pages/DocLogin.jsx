@@ -79,7 +79,7 @@ const DocLogin = () => {
                     
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
                         Not a registered Doctor
-                        <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-500"> Create an account </Link>
+                        <Link to="/docRegister" className="font-semibold text-indigo-600 hover:text-indigo-500"> Create an account </Link>
                     </p>
                 </div>
             </div>
