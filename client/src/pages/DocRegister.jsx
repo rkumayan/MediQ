@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import { UserContext } from "../contexts/userContext.js";
+import { DoctorContext } from "../contexts/doctorContext.js";
 import { useNavigate } from "react-router-dom";
 
 const DocRegister = () => {
@@ -13,33 +13,50 @@ const DocRegister = () => {
     const [tagLine, setTagLine] = useState("");
     const [averageWaitTime , setAverageWaitTime] = useState("");
 
-    const { setUser } = useContext(UserContext);
+    const { setDoctor } = useContext(DoctorContext);
     const navigate = useNavigate();
     
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const details = { email, password, firstName, lastName , department , tagLine , averageWaitTime };
-        console.log(details);
-        return;
-        
+        e.preventDefault();                                
         try {
-            const response = await fetch("http://localhost:4000/api/user/addUser", {
+            const doctor = { email , password , firstName , lastName , specialization : department };
+            const response = await fetch("http://localhost:4000/api/doctor/addDoctor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(details),
+                body: JSON.stringify(doctor),
             });
-            const data = await response.json();
-            if( data.ok === 'true' ){
-                localStorage.setItem("user", JSON.stringify(data.user));
-                setUser(data.user);
-                navigate("/");
+
+            const doctorData = await response.json();
+            if( doctorData.ok === 'true' ){
+                try{
+                    const departmentDetails = { departmentName: department , doctor: doctorData.doctor._id ,  tagLine , averageWaitTime };
+                    const response = await fetch("http://localhost:4000/api/department/createDepartment", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(departmentDetails),
+                    });
+                    const data = await response.json();
+                    if( data.ok === 'true' ){
+                        localStorage.setItem("doctor", JSON.stringify(doctorData.doctor));
+                        setDoctor(doctorData.doctor);
+                        navigate("/doctorDashboard");
+                    } else {
+                        alert( data.message)
+                    }
+                }
+                catch( error ){
+                    console.log( "error creating department" , error);
+                }
+                
             } else {
-                alert(data.message);
+                alert(doctorData.message);
             }            
         } catch (error) {
-            console.error("Error:", error);
+            alert(error);
         }
     }
 
@@ -144,7 +161,7 @@ const DocRegister = () => {
                     
                     <p className="mt-10 text-center text-sm/6 text-gray-500">
                         Already a registered user
-                        <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500"> Login here </Link>
+                        <Link to="/doclogin" className="font-semibold text-indigo-600 hover:text-indigo-500"> Login here </Link>
                     </p>
                 </div>
             </div>
