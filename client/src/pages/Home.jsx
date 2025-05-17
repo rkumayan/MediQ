@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NotLoggedIn from "./NotLoggedIn";
 const Home = () => {
     const user = JSON.parse(localStorage.getItem("user"));
+    const doctor = JSON.parse(localStorage.getItem("doctor"));
     const [departments, setDepartments] = useState([]);
     const navigate = useNavigate();
 
@@ -21,6 +22,8 @@ const Home = () => {
 
     useEffect(() => {
         fetchDepartments();
+        if(doctor)
+            navigate("/doctorDashboard");
     }, []);
 
     const joinNow = async (departmentId) => {
@@ -51,7 +54,7 @@ const Home = () => {
         <div>
 
 
-            {!user && <NotLoggedIn />}
+            {!user && !doctor && <NotLoggedIn />}
 
             <div className="flex">
             
