@@ -11,6 +11,7 @@ import { UserContext } from "./contexts/userContext.js";
 import { DoctorContext } from "./contexts/doctorContext.js";
 import DoctorDashboard from "./pages/DoctorDashboard.jsx";
 import DocRegister from "./pages/DocRegister.jsx";
+import About from "./pages/About.jsx";
 
 function App() {
   const [user , setUser] = useState( JSON.parse(localStorage.getItem("user")) );
@@ -39,7 +40,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/department/:departmentId" element={<Department />} />
             <Route path="/" element={<Home />} />
-            <Route path="/about" element={<h1>About</h1>} />
+            <Route path="/about" element={ <About /> } />
             <Route path="*" element={<h1>404 Not Found</h1>} />
           </Routes>
         </DoctorContext.Provider>

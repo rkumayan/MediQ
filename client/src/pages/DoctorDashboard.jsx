@@ -100,7 +100,7 @@ const Department = () => {
         });
         const data = await response.json();
         if (data.ok === "true") {
-            alert("User removed from queue");
+            
             addChatToDatabase("system" , message , "system");
             if(isAppointmentSet){
                 try{
