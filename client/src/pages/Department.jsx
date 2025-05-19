@@ -14,9 +14,9 @@ const Department = () => {
 
     const [message, setMessage] = useState("");
 
-    // setInterval(() => {
-    //     fetchDepartment();
-    // }, 15000);
+    setInterval(() => {
+        fetchDepartment();
+    }, 15000);
 
     const sendChat = async (e) => {
         e.preventDefault();
@@ -212,7 +212,7 @@ const Department = () => {
                      m-10 " 
                         style={{ height: "350px"}}
                     > 
-                        <p className="text-center text-xl m-2"> <i class="fa-solid fa-user-group"></i>Group Chat</p>
+                        <p className="text-center text-xl m-2" onClick={fetchDepartment}> <i class="fa-solid fa-user-group"></i>Group Chat</p>
 
                          {department.groupChat?.length > 0 && 
                             <ul style={{ height: "250px", overflowY: "scroll" }}>

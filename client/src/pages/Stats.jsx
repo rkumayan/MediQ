@@ -38,7 +38,7 @@ const Stats = ({ department }) => {
                         <i className="fas fa-user-check"></i>
                     </div>
                     <div className="stat-info">
-                        <h3>Total Served : </h3>
+                        <h3>Total Served  </h3>
                         <p id="servedCount">{department.patientsTreated || 0}</p>
                         
                     </div>

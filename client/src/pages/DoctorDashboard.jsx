@@ -45,7 +45,7 @@ const Department = () => {
             text: message,
             senderType: "system",
         };
-        addChatToDatabase(sender , message , "system");
+        addChatToDatabase("system" , message , "system");
         setMessage("");
     }
     const fetchDepartment = async () => {
@@ -60,7 +60,9 @@ const Department = () => {
             console.error("Error fetching department:", error);
         }
     }
-
+    // setInterval(() => {
+    //     fetchDepartment();
+    // }, 25000);
     const fetchDepartmentId = async () => {
         const response = await fetch("http://localhost:4000/api/doctor/getDepartmentId", {
             method: "POST",
@@ -164,7 +166,7 @@ const Department = () => {
                     <div className="w-80 backdrop-blur-md bg-white/10 border border-white/20 relative text-black m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" 
                         style={{ height: "350px"}}
                     > 
-                        <p className="text-center text-xl m-2"> <i className="fa-solid fa-user-group"></i>Group Chat</p>
+                        <p className="text-center text-xl m-2" onClick={fetchDepartment} > <i className="fa-solid fa-user-group"></i>Group Chat</p>
 
                          {department.groupChat?.length > 0 && 
                             <ul style={{ height: "250px", overflowY: "scroll" }}>
