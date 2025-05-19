@@ -28,7 +28,7 @@ const Navbar = () => {
             <a href="/"> <h1 className="text-4xl"> MediQ </h1></a>
             
             <nav className="flex space-x-4">
-                <a href="/about" className="hover:text-gray-400 p-2 px-4">About</a>
+                <a href="/about" className="hover:text-gray-400 p-2 px-4">About us</a>
                 {user && user.firstName && 
                 <div>
                   <button className="uppercase p-2 px-4 bg-amber-600 rounded-full cursor-pointer"

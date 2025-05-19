@@ -4,8 +4,8 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="min-h-screen  bg-gray-50  flex mt-5 justify-center ">
-      <div className="max-w-3xl bg-white rounded-2xl shadow-lg p-8 ">
+    <div className="min-h-screen  backdrop-blur-md  flex mt-5 justify-center ">
+      <div className="max-w-3xl backdrop-blur-md rounded-2xl shadow-2xl p-8 ">
         <h1 className="text-4xl font-bold text-blue-600 mb-6">About Our Hospital Queue System</h1>
         <p className="text-gray-700 text-lg mb-4">
           Our virtual queue management system is designed to improve patient experience
