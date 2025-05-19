@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {DoctorContext} from "../contexts/DoctorContext";
+import {DoctorContext} from "../contexts/doctorContext";
 import { useContext } from "react";
 import Stats from "../pages/Stats";
 

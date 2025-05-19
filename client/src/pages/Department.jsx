@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import {useState, useEffect} from "react";
-import {UserContext} from "../contexts/UserContext";
+import {UserContext} from "../contexts/userContext";
 import { useContext } from "react";
 import Stats from "../pages/Stats";
 
