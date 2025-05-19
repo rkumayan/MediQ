@@ -13,7 +13,7 @@ const Login = () => {
         e.preventDefault();
         const user = { email, password };                
         try {
-            const response = await fetch("http://localhost:4000/api/user/validateUser", {
+            const response = await fetch("https://mediq-m56u.onrender.com/api/user/validateUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -20,7 +20,7 @@ const DocRegister = () => {
         e.preventDefault();                                
         try {
             const doctor = { email , password , firstName , lastName , specialization : department };
-            const response = await fetch("http://localhost:4000/api/doctor/addDoctor", {
+            const response = await fetch("https://mediq-m56u.onrender.com/api/doctor/addDoctor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -32,7 +32,7 @@ const DocRegister = () => {
             if( doctorData.ok === 'true' ){
                 try{
                     const departmentDetails = { departmentName: department , doctor: doctorData.doctor._id ,  tagLine , averageWaitTime };
-                    const response = await fetch("http://localhost:4000/api/department/createDepartment", {
+                    const response = await fetch("https://mediq-m56u.onrender.com/api/department/createDepartment", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",

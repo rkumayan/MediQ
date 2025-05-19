@@ -12,7 +12,7 @@ const DocLogin = () => {
         e.preventDefault();
         const doctor = { email, password };                
         try {
-            const response = await fetch("http://localhost:4000/api/doctor/validateDoctor", {
+            const response = await fetch("https://mediq-m56u.onrender.com/api/doctor/validateDoctor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

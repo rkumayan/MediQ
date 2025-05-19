@@ -9,7 +9,7 @@ const Home = () => {
 
     const fetchDepartments = async () => {
         try {
-            const response = await fetch("http://localhost:4000/api/department/getDepartments");
+            const response = await fetch("https://mediq-m56u.onrender.com/api/department/getDepartments");
             const data = await response.json();
             if( !data.ok)
                 alert("Error : " , data.message);
@@ -30,7 +30,7 @@ const Home = () => {
         navigate(`/department/${departmentId}`);
         return;
         try {
-            const response = await fetch("http://localhost:4000/api/department/joinDepartment", {
+            const response = await fetch("https://mediq-m56u.onrender.com/api/department/joinDepartment", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

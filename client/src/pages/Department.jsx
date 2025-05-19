@@ -28,7 +28,7 @@ const Department = () => {
         if (!message) return;
         try {
             
-            const response = await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
+            const response = await fetch(`https://mediq-m56u.onrender.com/api/department/addMessage/${departmentId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -49,7 +49,7 @@ const Department = () => {
     }
     const fetchDepartment = async () => {
         try {
-            const response = await fetch(`http://localhost:4000/api/department/getDepartment/${departmentId}`);
+            const response = await fetch(`https://mediq-m56u.onrender.com/api/department/getDepartment/${departmentId}`);
             const data = await response.json();
             if( !data.ok)
                 alert("Error : " , data.message);
@@ -73,7 +73,7 @@ const Department = () => {
         
         
         try {
-            const response = await fetch(`http://localhost:4000/api/department/joinDepartment/`, {
+            const response = await fetch(`https://mediq-m56u.onrender.com/api/department/joinDepartment/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -86,7 +86,7 @@ const Department = () => {
                 alert("Error: " + data.message);
             } else {
                 
-                await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
+                await fetch(`https://mediq-m56u.onrender.com/api/department/addMessage/${departmentId}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

@@ -18,7 +18,7 @@ const Department = () => {
     const addChatToDatabase = async (sender , text , senderType) => {
         if(!text) return;
         try {            
-            const response = await fetch(`http://localhost:4000/api/department/addMessage/${departmentId}`, {
+            const response = await fetch(`https://mediq-m56u.onrender.com/api/department/addMessage/${departmentId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -50,7 +50,7 @@ const Department = () => {
     }
     const fetchDepartment = async () => {
         try {
-            const response = await fetch(`http://localhost:4000/api/department/getDepartment/${departmentId}`);
+            const response = await fetch(`https://mediq-m56u.onrender.com/api/department/getDepartment/${departmentId}`);
             const data = await response.json();
             if( !data.ok)
                 alert("Error : " , data.message);
@@ -64,7 +64,7 @@ const Department = () => {
     //     fetchDepartment();
     // }, 25000);
     const fetchDepartmentId = async () => {
-        const response = await fetch("http://localhost:4000/api/doctor/getDepartmentId", {
+        const response = await fetch("https://mediq-m56u.onrender.com/api/doctor/getDepartmentId", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -93,7 +93,7 @@ const Department = () => {
     }, [departmentId]);
 
     const removeFromQueue = async ( isAppointmentSet , userId , message) => {
-        const response = await fetch(`http://localhost:4000/api/department/removeQueueMember`, {
+        const response = await fetch(`https://mediq-m56u.onrender.com/api/department/removeQueueMember`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -106,7 +106,7 @@ const Department = () => {
             addChatToDatabase("system" , message , "system");
             if(isAppointmentSet){
                 try{
-                    const response = await fetch(`http://localhost:4000/api/department/increasePatientsTreated/${departmentId}`, {
+                    const response = await fetch(`https://mediq-m56u.onrender.com/api/department/increasePatientsTreated/${departmentId}`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"

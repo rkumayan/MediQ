@@ -19,7 +19,7 @@ const Register = () => {
         
         
         try {
-            const response = await fetch("http://localhost:4000/api/user/addUser", {
+            const response = await fetch("https://mediq-m56u.onrender.com/api/user/addUser", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
