@@ -122,7 +122,10 @@ const Department = () => {
 
             <div className="flex flex-wrap h-100  ">
 
-                <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
+                {/* PATIENT REGISTRATION */}
+                <div className="  backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl
+                     p-6 max-w-sm  shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer
+                     m-10 ">
                     {/* FORM TO TO ADD USER TO THE QUEUE */}
                 <form >
                     <h2 className=" m-4">
@@ -154,16 +157,16 @@ const Department = () => {
                     <div className="mx-5 my-2">
                         <label><i className="fas fa-exclamation-triangle"></i> Priority Level</label>
                         <div className="">
-                            <p className= {"priority-option normal px-3 py-1 m-2 rounded cursor-pointer inline-block border"
-                                + (priority === "normal" ? " text-white bg-green-500" : " text-slate-600 bg-white")}
+                            <p className= {"priority-option normal px-3 py-1 m-2 rounded cursor-pointer inline-block border   backdrop-blur-md"
+                                + (priority === "normal" ? " text-white bg-green-500" : " text-slate-600 ")}
                                 onClick={() => {
                                     setPriority("normal");
                                 }}
                             >
                                 <span><i className="fas fa-walking"></i> Normal</span>
                             </p>
-                            <p className= {"priority-option emergency px-3 py-1 m-2 rounded cursor-pointer inline-block border"
-                                + (priority === "emergency" ? " text-white bg-red-500" : " text-slate-600 bg-white")}
+                            <p className= {"priority-option emergency px-3 py-1 m-2 rounded cursor-pointer inline-block border   backdrop-blur-md"
+                                + (priority === "emergency" ? " text-white bg-red-500" : " text-slate-600 ")}
                                 onClick={() => {
                                     setPriority("emergency");
                                 }}
@@ -182,7 +185,9 @@ const Department = () => {
                 </div>  
 
                 {/* QUEUE MEMBERS */}
-                <div className="w-80 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
+                <div className="w-80  backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl
+                     p-6 max-w-sm  shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer
+                     m-10 ">
                     <h2 className="m-4 border-b">
                         <i className="fas fa-users m-2"></i>
                         <p className="text-xl inline-block bold "> Queue Members</p>
@@ -191,7 +196,7 @@ const Department = () => {
                         {department.queueMembers?.map(member => (
                             <li key={member.userId} className= {"border-b p-2" + ( member.priority === "emergency" ? " text-red-500" : "")}>
                                 <p className="text-center"> {member.fullName} </p>
-                                <p className="text-sm text-gray-500 text-center"> for {member.visitReason} </p>
+                                <p className="text-sm text-gray-800 text-center"> for {member.visitReason} </p>
                                 
                             </li>
                         ))}
@@ -202,7 +207,9 @@ const Department = () => {
                 <div >
                     
                 
-                    <div className="w-80 bg-white border relative text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" 
+                    <div className="w-80  backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl
+                     p-6 max-w-sm  shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer
+                     m-10 " 
                         style={{ height: "350px"}}
                     > 
                         <p className="text-center text-xl m-2"> <i class="fa-solid fa-user-group"></i>Group Chat</p>
@@ -213,7 +220,9 @@ const Department = () => {
                                     <li key={index} className={" p-2" + (message.senderType === "system" ? " text-red-500" : "")}>
                                         
                                         <strong>{message.sender}</strong>: {message.text}
+                                        <hr />
                                     </li>
+                                    
                                 ))}
                             </ul>
                             }

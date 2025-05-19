@@ -60,7 +60,7 @@ const Home = () => {
             
             { user && departments.length > 0 &&
                 departments.map((department) => (                    
-                    <div key = {department._id} className=" text-black backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl
+                    <div key = {department._id} className="  backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl
                      p-6 max-w-sm  shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer
                      m-10 
                     "
