@@ -10,10 +10,10 @@ const path = require('path');
 dotenv.config();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../client/dist')));
+app.use(express.static(path.join(__dirname, './dist')));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.join(__dirname, './dist/index.html'));
 });
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('MongoDB connected successfully!');
