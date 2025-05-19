@@ -129,12 +129,12 @@ const Department = () => {
             <p className="text-center m-5"> {department.tagLine} </p>
             <Stats department = {department} />
 
-            <div className="flex flex-wrap h-100  ">
+            <div className="flex flex-wrap h-100 backdrop-blur-md ">
 
                 
 
                 {/* QUEUE MEMBERS */}
-                <div className="w-100 bg-white border text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
+                <div className="w-100 backdrop-blur-md bg-white/10 border border-white/20 text-black m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200">
                     <h2 className="m-4 border-b">
                         <i className="fas fa-users m-2"></i>
                         <p className="text-xl inline-block bold "> Queue Members</p>
@@ -143,7 +143,7 @@ const Department = () => {
                         {department.queueMembers?.map(member => (
                             <li key={member.userId} className= {"border-b p-2 cursor-pointer " + ( member.priority === "emergency" ? " text-red-500" : "")}>
                                 <p className="text-center font-bold"> {member.fullName} </p>
-                                <p className="text-sm text-gray-500 text-center"> for {member.visitReason} </p>
+                                <p className="text-sm text-black text-center"> for {member.visitReason} </p>
                                 <div className="flex justify-center">
                                     <button className="border p-2 m-1 cursor-pointer rounded hover:bg-green-600 hover:text-white"
                                         onClick={ () => { removeFromQueue( true , member.userId , `appointment setted for ${member.fullName}`) } }
@@ -161,7 +161,7 @@ const Department = () => {
                 <div >
                     
                 
-                    <div className="w-80 bg-white border relative text-slate-600 m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" 
+                    <div className="w-80 backdrop-blur-md bg-white/10 border border-white/20 relative text-black m-6 shadow-lg rounded-lg hover:shadow-2xl hover:scale-102 transition-transform duration-200" 
                         style={{ height: "350px"}}
                     > 
                         <p className="text-center text-xl m-2"> <i className="fa-solid fa-user-group"></i>Group Chat</p>
@@ -180,7 +180,7 @@ const Department = () => {
                           <input
                             type="text"
                             placeholder="Type your message..."
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="flex-1 px-4 py-2 border  border-gray-500 placeholder-black rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                           />
