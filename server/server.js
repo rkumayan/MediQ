@@ -4,11 +4,17 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/user.routes.js');
 const app = express();
+const path = require('path');
+
 // middlewares
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+});
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('MongoDB connected successfully!');
     app.listen(process.env.PORT || 5000, () => {
